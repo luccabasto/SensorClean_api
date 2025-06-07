@@ -1,8 +1,11 @@
 ﻿using SensorClean.Domain.Models;
+using SensorClean.Application.Interface.School;
+
+
 
 namespace SensorClean.Application.Services.UseCases.School
 {
-    public class createSchool
+    public class CreateSchool : ICreateSchool
     {
         private readonly List<SchoolModel> _schools = new();
         public SchoolModel Create(SchoolModel school)
@@ -17,8 +20,8 @@ namespace SensorClean.Application.Services.UseCases.School
 
             _schools.Add(createdSchool);
             return createdSchool;
-        }
+       }
         public List<SchoolModel> List() => _schools;
-
     }
 }
+
