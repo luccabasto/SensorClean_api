@@ -1,9 +1,10 @@
-﻿using SensorClean.Domain.Models;
+﻿using SensorClean.Application.Interface.School;
+using SensorClean.Domain.Models;
 
 
 namespace SensorClean.Application.Services.UseCases.School
 {
-    public class getSchoolById
+    public class GetSchoolById : IGetSchoolById
     {
         private readonly List<SchoolModel> _schools = new();
 

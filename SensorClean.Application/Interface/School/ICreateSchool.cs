@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace SensorClean.Application.Interface.School
 {
-    public interface ISchoolService
+    public interface ICreateSchool
     {
-        IEnumerable<SchoolModel> GetAll();
-        SchoolModel? GetById(int id);
         SchoolModel Create(SchoolModel school);
-        SchoolModel? Update(int id, SchoolModel school);
-        bool Delete(int id);
     }
 }
