@@ -1,0 +1,6 @@
+@SensorClean.WebAPI_HostAddress = http://localhost:5071
+
+GET {{SensorClean.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
