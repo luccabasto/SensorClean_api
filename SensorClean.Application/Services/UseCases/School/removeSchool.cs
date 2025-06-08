@@ -1,4 +1,5 @@
-﻿using SensorClean.Application.Interface.School;
+﻿using SensorClean.Application.Interface.Repositories;
+using SensorClean.Application.Interface.School;
 using SensorClean.Domain.Models;
 
 namespace SensorClean.Application.Services.UseCases.School
@@ -20,5 +21,18 @@ namespace SensorClean.Application.Services.UseCases.School
             var school = _schools.FirstOrDefault(e => e.Id == id);
             return school is not null && _schools.Remove(school);
         }
+
+
+
+        /// <summary>
+        /// Simula a remoção de uma escola pelo ID.
+        /// </summary>
+        private readonly ISchoolRepository _schoolRepository;
+        public RemoveSchool(ISchoolRepository schoolRepository)
+        {
+            _schoolRepository = schoolRepository;
+        }
+        public bool Execute(int id) => _schoolRepository.Remove(id);
+        
     }
 }
