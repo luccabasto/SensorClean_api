@@ -2,9 +2,13 @@
 using SensorClean.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Net;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace SensorClean.Infra.Repositories
 {
@@ -16,12 +20,20 @@ namespace SensorClean.Infra.Repositories
         public SchoolModel Create(SchoolModel school)
         {
             var newSchool = new SchoolModel(
+
                 id: _idCounter++,
                 name: school.Name,
                 email: school.Email,
+                city: school.City,
+                state: school.State,
+                country: school.Country,
+                address: school.Address,
+                postalCode: school.PostalCode,
+                phone: school.Phone,
+                website: school.Website,
                 createdAt: DateTime.UtcNow,
-                isActive: true
-            );
+                isActive: school.IsActive
+                );
             _schools.Add(newSchool);
             return newSchool;
         }
