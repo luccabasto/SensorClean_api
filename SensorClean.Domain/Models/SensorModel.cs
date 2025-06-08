@@ -9,5 +9,8 @@ namespace SensorClean.Domain.Models
         public bool IsActive { get; init; }
         public string TypeSensor { get; init; }  // Ex: "temperatura", "umidade"
         public string? Description { get; init; }
+
+        public SchoolModel School { get; init; }
+        public ICollection<ReadingModel> Reading { get; init; }
     }
 }

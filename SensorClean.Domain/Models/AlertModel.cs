@@ -10,6 +10,7 @@
         public string Level { get; init; }         // Ex: "Alto", "Crítico"
         public string Status { get; init; }        // Ex: "Emitido", "Visualizado", "Resolvido"
         public DateTime Timestamp { get; init; }
+        public ReadingModel Reading { get; init; } // Navegação para a Leitura
     }
 
 }
