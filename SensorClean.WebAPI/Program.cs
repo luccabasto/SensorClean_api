@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using SensorClean.Application.Services.UseCases.School;
 using SensorClean.Application.Interface.Repositories;
 using SensorClean.Infra.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace SensorClean.WebApi
 {
@@ -35,6 +36,9 @@ namespace SensorClean.WebApi
                 }
               )
            );
+
+            builder.Services.AddDbContext<SensorCleanDbContext>(options =>
+            options.UseOracle(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             /// Service 
 
