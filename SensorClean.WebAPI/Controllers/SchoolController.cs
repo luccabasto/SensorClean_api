@@ -81,7 +81,7 @@ namespace SensorClean.WebAPI.Controllers
         [HttpPut("{id:int}")]
         public IActionResult UpdateSchoolByID(int id, [FromBody] SchoolModel school)
         {
-            var updated = _updateSchool.updateSchoolByID(id, school);
+            var updated = _updateSchool.UpdateSchoolByID(id, school);
             return updated is not null ? Ok(updated) : NotFound($"Escola com ID {id} não encontrada.");
         }
 
