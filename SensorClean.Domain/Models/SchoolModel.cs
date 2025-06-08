@@ -15,14 +15,7 @@
         public DateTime CreatedAt { get; set; }
         public bool IsActive { get; set; }
 
-        public SchoolModel()
-        {
-            Id = 0;
-            Name = "Escola Padrão";
-            Email = "contato@escolapadrao.com";
-            CreatedAt = DateTime.UtcNow;
-            IsActive = true;
-        }
+        public SchoolModel() { }
         public SchoolModel(string name, string email, int id)
         {
             Id = id; 
@@ -56,18 +49,36 @@
             IsActive = true;
         }
 
-        public SchoolModel(int id, string name, string email, DateTime createdAt, bool isActive)
+        public SchoolModel(int id, string name, string email, DateTime createdAt, bool isActive, string? city, string? state)
         {
             Id = id;
             Name = name;
             Email = email;
             CreatedAt = createdAt;
             IsActive = isActive;
+            State = state;
+        }
+
+        public SchoolModel(int? id, string name, string email, DateTime createdAt, bool isActive, string? city, string? state, string? country, string? address, string? postalCode, string? phone, string? website)
+        {
+            Id = id;
+            Name = name;
+            Email = email;
+            CreatedAt = createdAt;
+            IsActive = isActive;
+            City = city;
+            State = state;
+            Country = country;
+            Address = address;
+            PostalCode = postalCode;
+            Phone = phone;
+            Website = website;
         }
 
         public void Activate()
         {
             IsActive = true;
         }
+
     }
 }
