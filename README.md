@@ -113,7 +113,7 @@ Marcelo Galli - 55365
 [Fact]
 public void CreateSchool_ReturnsCreatedSchool()
 {
-    var school = new SchoolModel { Name = "Nova", City = "SP", State = "SP", Ativo = "S" };
+    var school = new SchoolModel { Name = "Nova", City = "SP", State = "SP", IsActive = "S" };
     var mockRepo = new Mock<ISchoolRepository>();
     mockRepo.Setup(r => r.Create(It.IsAny<SchoolModel>())).Returns(school);
     var useCase = new CreateSchool(mockRepo.Object);
