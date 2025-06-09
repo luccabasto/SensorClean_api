@@ -14,12 +14,7 @@
         public string? Website { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsActive { get; set; }
-
-<<<<<<< Updated upstream
-=======
         public ICollection<SensorModel>? Sensor { get; set; }
-
->>>>>>> Stashed changes
         public SchoolModel() { }
         public SchoolModel(string name, string email, int id)
         {
