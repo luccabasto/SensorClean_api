@@ -4,6 +4,7 @@ using SensorClean.Application.Services.UseCases.School;
 using SensorClean.Application.Interface.Repositories;
 using SensorClean.Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
+using AspNetCoreRateLimit;
 
 namespace SensorClean.WebApi
 {
@@ -17,6 +18,10 @@ namespace SensorClean.WebApi
 
 
             builder.Services.AddControllers();
+            builder.Services.AddMemoryCache();
+            builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+            builder.Services.AddInMemoryRateLimiting();
+            builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
             builder.Services.AddOpenApi();
 
             /// Swagger Configuration
@@ -36,6 +41,7 @@ namespace SensorClean.WebApi
                 }
               )
            );
+
             builder.Services.AddDbContext<SensorCleanDbContext>(options =>
             options.UseOracle(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -69,7 +75,7 @@ namespace SensorClean.WebApi
                 return Task.CompletedTask;
             });
 
-
+            app.UseIpRateLimiting();
             app.UseAuthorization();
             app.MapControllers();
             app.Run();

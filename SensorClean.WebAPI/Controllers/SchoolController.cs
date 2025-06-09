@@ -56,7 +56,18 @@ namespace SensorClean.WebAPI.Controllers
         public IActionResult GetSchoolById(int id)
         {
             var result = _getSchoolById.getSchoolByID(id);
-            return result is not null ? Ok(result) : NotFound($"Escola com ID {id} não encontrada.");
+            if (result == null) return NotFound($"Escola com ID {id} não encontrada.");
+
+            return Ok(new
+            {
+                result,
+                _links = new
+                {
+                    self = $"/api/school/{id}",
+                    update = $"/api/school/{id}",
+                    delete = $"/api/school/{id}"
+                }
+            });
         }
 
         /// <summary>
