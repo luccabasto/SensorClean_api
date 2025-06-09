@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorClean.Domain", "Senso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorClean.Infra", "SensorClean.Infra\SensorClean.Infra.csproj", "{9445BCFD-BD89-42A2-838C-5F400EE2F834}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorClean.Tests", "SensorClean.Tests\SensorClean.Tests.csproj", "{8382DAC7-FD7A-4F47-A151-79A786528A9E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{9445BCFD-BD89-42A2-838C-5F400EE2F834}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9445BCFD-BD89-42A2-838C-5F400EE2F834}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9445BCFD-BD89-42A2-838C-5F400EE2F834}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8382DAC7-FD7A-4F47-A151-79A786528A9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8382DAC7-FD7A-4F47-A151-79A786528A9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8382DAC7-FD7A-4F47-A151-79A786528A9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8382DAC7-FD7A-4F47-A151-79A786528A9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
