@@ -5,6 +5,14 @@ API desenvolvida para o projeto **Green Light**: plataforma inteligente de preve
 
 ---
 
+### Integrantes
+
+Lucas Bastos - 553771
+Erick Lopes - 553927
+Marcelo Galli - 553654
+
+---
+
 ## 🏫 **Contexto**
 
 Com o aumento das ondas de calor, escolas públicas precisam de informação rápida para agir e proteger alunos. Esta API permite cadastrar escolas, sensores, registrar leituras ambientais (temperatura, umidade) e emitir alertas automáticos para gestão escolar, tudo via endpoints RESTful.
