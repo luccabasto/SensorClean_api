@@ -1,56 +1,69 @@
 
-# Green Light API - Monitoramento Ambiental Escolar
+# Green Light API
 
-API desenvolvida em .NET (Web API), conectada ao banco Oracle, para gestão de riscos climáticos em escolas públicas, permitindo monitoramento de sensores, leituras ambientais e emissão de alertas automáticos.
+API em .NET (Web API) para monitoramento ambiental e alertas em escolas públicas.  
+Funciona com banco Oracle, integra RabbitMQ e ML.NET, cobre CRUD, práticas RESTful e testes automatizados.
+
+---
 
 ## 🏫 Contexto
 
 Com o aumento das ondas de calor, escolas precisam de informações para agir preventivamente. Esta API oferece cadastro de escolas, sensores, leituras de temperatura/umidade e alertas automáticos, permitindo integração com dashboards e aplicativos externos.
 
-## ⚙️ Principais Funcionalidades
+---
 
-- CRUD completo para Escolas, Sensores, Leituras e Alertas
-- Persistência em Oracle Database (FIAP)
-- Boas práticas RESTful: HATEOAS e Rate Limit
-- Documentação automática via Swagger
-- Envio de alertas para RabbitMQ (microserviços)
-- Predição de risco com ML.NET
-- Testes automatizados xUnit
+## 👨‍💻 Integrantes
 
-## 🚀 Como rodar localmente
-
-1. Clone o repositório:
-```bash
-git clone https://github.com/seu-usuario/seu-repo.git
-cd seu-repo
-```
-
-2. Configure o banco de dados:
-```json
-"ConnectionStrings": {
-  "DefaultConnection": "User Id=SEU_USUARIO;Password=SUA_SENHA;Data Source=oracle.fiap.com.br:1521/orcl;"
-}
-```
-
-3. Instale as dependências:
-```bash
-dotnet restore
-```
-
-4. Execute a aplicação:
-```bash
-dotnet run --project SensorClean.WebAPI
-```
-Acesse [http://localhost:5071/swagger](http://localhost:5071/swagger) para testar.
+Lucas Bastos - 553771  
+Erick Lopes - 553927  
+Marcelo Galli - 55365  
 
 ---
 
-## 📚 Principais Endpoints e exemplos
+## ⚙️ Funcionalidades
 
-### Escola (`/api/school`)
-**Criar escola:**
+- CRUD completo para escolas, sensores, leituras e alertas
+- Documentação Swagger disponível em `/swagger`
+- Rate Limit para evitar abuso (10 req/min por IP)
+- HATEOAS em rotas de detalhe
+- Envio de alertas para fila RabbitMQ
+- ML.NET para predição de risco em alertas
+- Testes xUnit para UseCases
+
+---
+
+## Como rodar
+
+1. **Clone o repositório:**
+   ```sh
+   git clone https://github.com/seu-usuario/seu-repo.git
+   cd seu-repo
+   ```
+
+2. **Configure a connection string do Oracle** no `appsettings.json`:
+   ```json
+   "ConnectionStrings": {
+     "DefaultConnection": "User Id=SEU_USUARIO;Password=SUA_SENHA;Data Source=oracle.fiap.com.br:1521/orcl;"
+   }
+   ```
+
+3. **Instale as dependências:**
+   ```sh
+   dotnet restore
+   ```
+
+4. **Execute a aplicação:**
+   ```sh
+   dotnet run --project SensorClean.WebAPI
+   ```
+   E acesse `/swagger` no navegador.
+
+---
+
+## Exemplos de requisições
+
+### Criar escola (POST `/api/school`)
 ```json
-POST /api/school
 {
   "name": "EMEF João Silva",
   "city": "São Paulo",
@@ -58,49 +71,9 @@ POST /api/school
   "ativo": "S"
 }
 ```
-**Buscar todas:** `GET /api/school`  
-**Buscar por ID:** `GET /api/school/1`  
-**Atualizar:**  
-```json
-PUT /api/school/1
-{
-  "id": 1,
-  "name": "EMEF Atualizada",
-  "city": "São Paulo",
-  "state": "SP",
-  "ativo": "S"
-}
-```
-**Remover:** `DELETE /api/school/1`
 
-### Sensor (`/api/sensor`)
+### Criar alerta (POST `/api/alert`)
 ```json
-POST /api/sensor
-{
-  "idEscola": 1,
-  "localizacao": "Sala 1",
-  "ativo": "S",
-  "tipo": "temperatura",
-  "descricao": "Sensor principal"
-}
-```
-**Buscar todos:** `GET /api/sensor`
-
-### Leitura (`/api/reading`)
-```json
-POST /api/reading
-{
-  "idSensor": 1,
-  "temperatura": 35.5,
-  "umidade": 75.2,
-  "timestampLeitura": "2024-06-06T12:00:00"
-}
-```
-**Buscar todas:** `GET /api/reading`
-
-### Alerta (`/api/alert`)
-```json
-POST /api/alert
 {
   "idLeitura": 1,
   "tipo": "Calor Extremo",
@@ -110,12 +83,10 @@ POST /api/alert
   "timestampAlerta": "2024-06-06T12:10:00"
 }
 ```
-**Buscar todos:** `GET /api/alert`
 
 ---
 
-## 🔗 Exemplo de resposta HATEOAS
-
+## Resposta HATEOAS (exemplo)
 ```json
 {
   "result": {
@@ -135,22 +106,9 @@ POST /api/alert
 
 ---
 
-## ⏳ Exemplo de Rate Limit
+## Testes automatizados (xUnit/Moq)
 
-- A API retorna HTTP 429 (Too Many Requests) caso ultrapasse o limite de 10 requisições por minuto por IP.
-- Configurável via appsettings.json.
-
----
-
-## 🛠️ RabbitMQ e ML.NET
-
-- Ao criar um alerta, uma mensagem JSON é enviada para a fila `alertas` no RabbitMQ.
-- O risco previsto de incidente é calculado via ML.NET e incluso na mensagem do alerta.
-
----
-
-## 🧪 Exemplos de testes xUnit
-
+### SchoolServiceTests.cs
 ```csharp
 [Fact]
 public void CreateSchool_ReturnsCreatedSchool()
@@ -164,6 +122,7 @@ public void CreateSchool_ReturnsCreatedSchool()
 }
 ```
 
+### AlertServiceTests.cs
 ```csharp
 [Fact]
 public void CreateAlert_ReturnsCreatedAlert()
@@ -179,13 +138,13 @@ public void CreateAlert_ReturnsCreatedAlert()
 
 ---
 
-## 👥 Contribuição
+## Rate Limit
 
-Pull requests são bem-vindos!  
-Sugestões, dúvidas ou feedback? Abra uma issue ou me encontre no LinkedIn.
+Se fizer mais de 10 requisições/minuto, recebe HTTP 429 (Too Many Requests).
 
 ---
 
-## 🛡️ Licença
+## RabbitMQ e ML.NET
 
-MIT
+- Alerta criado = mensagem JSON publicada na fila `alertas` (RabbitMQ)
+- Predição de risco feita com ML.NET na lógica de alerta
