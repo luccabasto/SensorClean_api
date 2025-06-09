@@ -7,34 +7,60 @@ namespace SensorClean.Infra.Repositories
 {
     public class SensorRepository : ISensorRepository
     {
-        private static readonly List<SensorModel> _sensors = new();
-        private static int _nextId = 1;
+        private readonly SensorCleanDbContext _context;
+
+        public SensorRepository(SensorCleanDbContext context)
+        {
+            _context = context;
+        }
 
         public SensorModel Create(SensorModel sensor)
         {
-            var sensorToAdd = sensor with { Id = _nextId++ };
-            _sensors.Add(sensorToAdd);
-            return sensorToAdd;
+            _context.Sensores.Add(sensor);
+            _context.SaveChanges();
+            return sensor;
         }
 
-        public IEnumerable<SensorModel> GetAll() => _sensors;
+        public IEnumerable<SensorModel> GetAll()
+        {
+            return _context.Sensores.ToList();
+        }
 
-        public SensorModel? GetById(int id) => _sensors.FirstOrDefault(s => s.Id == id);
+        public SensorModel? GetById(int id)
+        {
+            return _context.Sensores.Find(id);
+        }
 
         public SensorModel? Update(int id, SensorModel sensor)
         {
-            var index = _sensors.FindIndex(s => s.Id == id);
-            if (index == -1) return null;
+            var existingSensor = _context.Sensores.Find(id);
+            if (existingSensor == null) return null;
 
-            var updatedSensor = sensor with { Id = id };
-            _sensors[index] = updatedSensor;
+            var updatedSensor = new SensorModel
+            {
+                Id = existingSensor.Id,
+                IdSchool = sensor.IdSchool,
+                Localization = sensor.Localization,
+                IsActive = sensor.IsActive,
+                TypeSensor = sensor.TypeSensor,
+                Description = sensor.Description,
+                School = existingSensor.School,
+                Reading = existingSensor.Reading
+            };
+
+            _context.Entry(existingSensor).CurrentValues.SetValues(updatedSensor);
+            _context.SaveChanges();
             return updatedSensor;
         }
 
         public bool Remove(int id)
         {
-            var sensor = _sensors.FirstOrDefault(s => s.Id == id);
-            return sensor != null && _sensors.Remove(sensor);
+            var sensor = _context.Sensores.Find(id);
+            if (sensor == null) return false;
+
+            _context.Sensores.Remove(sensor);
+            _context.SaveChanges();
+            return true;
         }
     }
 }

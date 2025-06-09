@@ -39,10 +39,10 @@ namespace SensorClean.WebApi
 
             builder.Services.AddDbContext<SensorCleanDbContext>(options =>
             options.UseOracle(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
 
             /// Service 
 
-            builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
             builder.Services.AddScoped<IGetAllSchools, GetAllSchools>();
             builder.Services.AddScoped<IGetSchoolById, GetSchoolById>();
             builder.Services.AddScoped<ICreateSchool, CreateSchool>();
