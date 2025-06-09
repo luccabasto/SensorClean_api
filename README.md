@@ -1,148 +1,191 @@
 
-# Green Light - API para Monitoramento Ambiental em Escolas Públicas 🌱
+# Green Light API - Monitoramento Ambiental Escolar
 
-API desenvolvida para o projeto **Green Light**: plataforma inteligente de prevenção de riscos climáticos em escolas públicas, focada no monitoramento ambiental e emissão de alertas automáticos em situações de calor extremo. Desenvolvida em .NET, conectada a banco de dados Oracle, seguindo Clean Architecture.
+API desenvolvida em .NET (Web API), conectada ao banco Oracle, para gestão de riscos climáticos em escolas públicas, permitindo monitoramento de sensores, leituras ambientais e emissão de alertas automáticos.
 
----
+## 🏫 Contexto
 
-### Integrantes
+Com o aumento das ondas de calor, escolas precisam de informações para agir preventivamente. Esta API oferece cadastro de escolas, sensores, leituras de temperatura/umidade e alertas automáticos, permitindo integração com dashboards e aplicativos externos.
 
-Lucas Bastos - 553771<br/>
-Erick Lopes - 553927<br/>
-Marcelo Galli - 55365
+## ⚙️ Principais Funcionalidades
 
----
+- CRUD completo para Escolas, Sensores, Leituras e Alertas
+- Persistência em Oracle Database (FIAP)
+- Boas práticas RESTful: HATEOAS e Rate Limit
+- Documentação automática via Swagger
+- Envio de alertas para RabbitMQ (microserviços)
+- Predição de risco com ML.NET
+- Testes automatizados xUnit
 
-## 🏫 **Contexto**
+## 🚀 Como rodar localmente
 
-Com o aumento das ondas de calor, escolas públicas precisam de informação rápida para agir e proteger alunos. Esta API permite cadastrar escolas, sensores, registrar leituras ambientais (temperatura, umidade) e emitir alertas automáticos para gestão escolar, tudo via endpoints RESTful.
-
----
-
-## ⚙️ **Principais Funcionalidades**
-
-- CRUD de Escolas, Sensores, Leituras e Alertas
-- Conectada ao banco Oracle já existente da rede pública
-- Estrutura Clean Architecture (Domain, Application, Infra, WebAPI)
-- **Documentação automática via Swagger**
-- [**(Opcional)**] Rate Limit para proteger de abusos
-- [**(Opcional)**] Respostas com HATEOAS
-
----
-
-## 🚀 **Como rodar localmente**
-
-### 1. **Clone o repositório**
+1. Clone o repositório:
 ```bash
 git clone https://github.com/seu-usuario/seu-repo.git
 cd seu-repo
 ```
 
-### 2. **Configure o banco de dados**
-- Edite o arquivo `appsettings.json` com sua connection string Oracle:
+2. Configure o banco de dados:
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "User Id=usuario;Password=senha;Data Source=localhost:1521/XEPDB1;"
+  "DefaultConnection": "User Id=SEU_USUARIO;Password=SUA_SENHA;Data Source=oracle.fiap.com.br:1521/orcl;"
 }
 ```
 
-### 3. **Instale as dependências**
+3. Instale as dependências:
 ```bash
 dotnet restore
 ```
 
-### 4. **Execute a aplicação**
+4. Execute a aplicação:
 ```bash
 dotnet run --project SensorClean.WebAPI
 ```
-Acesse [http://localhost:5000/swagger](http://localhost:5000/swagger) para testar os endpoints via Swagger!
+Acesse [http://localhost:5071/swagger](http://localhost:5071/swagger) para testar.
 
 ---
 
-## 📝 **Principais Endpoints**
+## 📚 Principais Endpoints e exemplos
 
-### **Escolas**
-| Método | Rota            | Descrição              |
-|--------|-----------------|------------------------|
-| GET    | /api/school     | Lista todas escolas    |
-| GET    | /api/school/{id}| Consulta por ID        |
-| POST   | /api/school     | Cria nova escola       |
-| PUT    | /api/school/{id}| Atualiza escola        |
-| DELETE | /api/school/{id}| Remove escola          |
-
-### **Sensores**
-| Método | Rota             | Descrição              |
-|--------|------------------|------------------------|
-| GET    | /api/sensor      | Lista todos sensores   |
-| POST   | /api/sensor      | Cria novo sensor       |
-
-### **Leituras**
-| Método | Rota             | Descrição              |
-|--------|------------------|------------------------|
-| GET    | /api/reading     | Lista todas leituras   |
-| POST   | /api/reading     | Registra nova leitura  |
-
-### **Alertas**
-| Método | Rota             | Descrição              |
-|--------|------------------|------------------------|
-| GET    | /api/alert       | Lista todos alertas    |
-| POST   | /api/alert       | Cria novo alerta       |
-
----
-
-## 💡 **Exemplo de Request**
-
-### **Criar uma escola**
+### Escola (`/api/school`)
+**Criar escola:**
 ```json
 POST /api/school
 {
   "name": "EMEF João Silva",
   "city": "São Paulo",
   "state": "SP",
-  "isActive": "S"
+  "ativo": "S"
 }
 ```
+**Buscar todas:** `GET /api/school`  
+**Buscar por ID:** `GET /api/school/1`  
+**Atualizar:**  
+```json
+PUT /api/school/1
+{
+  "id": 1,
+  "name": "EMEF Atualizada",
+  "city": "São Paulo",
+  "state": "SP",
+  "ativo": "S"
+}
+```
+**Remover:** `DELETE /api/school/1`
 
-### **Adicionar um sensor**
+### Sensor (`/api/sensor`)
 ```json
 POST /api/sensor
 {
   "idEscola": 1,
-  "localizacao": "Sala 4",
+  "localizacao": "Sala 1",
   "ativo": "S",
   "tipo": "temperatura",
-  "descricao": "Sensor principal do pátio"
+  "descricao": "Sensor principal"
+}
+```
+**Buscar todos:** `GET /api/sensor`
+
+### Leitura (`/api/reading`)
+```json
+POST /api/reading
+{
+  "idSensor": 1,
+  "temperatura": 35.5,
+  "umidade": 75.2,
+  "timestampLeitura": "2024-06-06T12:00:00"
+}
+```
+**Buscar todas:** `GET /api/reading`
+
+### Alerta (`/api/alert`)
+```json
+POST /api/alert
+{
+  "idLeitura": 1,
+  "tipo": "Calor Extremo",
+  "mensagem": "Temperatura acima do seguro.",
+  "nivel": "Crítico",
+  "status": "Emitido",
+  "timestampAlerta": "2024-06-06T12:10:00"
+}
+```
+**Buscar todos:** `GET /api/alert`
+
+---
+
+## 🔗 Exemplo de resposta HATEOAS
+
+```json
+{
+  "result": {
+    "id": 1,
+    "name": "EMEF João Silva",
+    "city": "São Paulo",
+    "state": "SP",
+    "ativo": "S"
+  },
+  "_links": {
+    "self": "/api/school/1",
+    "update": "/api/school/1",
+    "delete": "/api/school/1"
+  }
 }
 ```
 
 ---
 
-## 🔐 **Boas Práticas e Diferenciais**
+## ⏳ Exemplo de Rate Limit
 
-- **Camadas bem definidas** (Domain, Application, Infra, WebAPI)
-- **Models em inglês, mapping para Oracle 100% por Fluent API**
-- **Pronto para Deploy em Azure, AWS, On-Premise ou Docker**
-- [**A implementar**] Rate Limit e HATEOAS para mais pontos!
+- A API retorna HTTP 429 (Too Many Requests) caso ultrapasse o limite de 10 requisições por minuto por IP.
+- Configurável via appsettings.json.
 
 ---
 
-## 📚 **Como testar via Swagger**
+## 🛠️ RabbitMQ e ML.NET
 
-1. Rode a API (`dotnet run`)
-2. Acesse [http://localhost:5000/swagger](http://localhost:5000/swagger)  
-3. Clique no endpoint desejado e preencha o body para testar
+- Ao criar um alerta, uma mensagem JSON é enviada para a fila `alertas` no RabbitMQ.
+- O risco previsto de incidente é calculado via ML.NET e incluso na mensagem do alerta.
 
 ---
 
-## 👥 **Contribuição**
+## 🧪 Exemplos de testes xUnit
+
+```csharp
+[Fact]
+public void CreateSchool_ReturnsCreatedSchool()
+{
+    var school = new SchoolModel { Name = "Nova", City = "SP", State = "SP", Ativo = "S" };
+    var mockRepo = new Mock<ISchoolRepository>();
+    mockRepo.Setup(r => r.Create(It.IsAny<SchoolModel>())).Returns(school);
+    var useCase = new CreateSchool(mockRepo.Object);
+    var created = useCase.Create(school);
+    Assert.Equal("Nova", created.Name);
+}
+```
+
+```csharp
+[Fact]
+public void CreateAlert_ReturnsCreatedAlert()
+{
+    var alert = new AlertModel { Tipo = "Calor", Mensagem = "Atenção!", Nivel = "Alto", Status = "Emitido", TimestampAlerta = DateTime.Now };
+    var mockRepo = new Mock<IAlertRepository>();
+    mockRepo.Setup(r => r.Create(It.IsAny<AlertModel>())).Returns(alert);
+    var useCase = new CreateAlert(mockRepo.Object);
+    var created = useCase.Create(alert);
+    Assert.Equal("Atenção!", created.Mensagem);
+}
+```
+
+---
+
+## 👥 Contribuição
 
 Pull requests são bem-vindos!  
-Sugestões e feedback? Abra uma issue ou me encontre no LinkedIn.
+Sugestões, dúvidas ou feedback? Abra uma issue ou me encontre no LinkedIn.
 
 ---
 
-## 🛡️ **Licença**
+## 🛡️ Licença
 
 MIT
-
----
