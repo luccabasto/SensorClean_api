@@ -14,7 +14,7 @@ namespace SensorClean.Application.Services.UseCases.Reading
 
         private readonly IReadingRepository _readingRepository;
 
-        private CreateReading(IReadingRepository readingRepository)
+        public CreateReading(IReadingRepository readingRepository)
         {
             _readingRepository = readingRepository;
         }
