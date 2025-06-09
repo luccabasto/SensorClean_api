@@ -1,5 +1,3 @@
-using SensorClean.Application.Interface;
-using SensorClean.Application.Services.UseCases;
 using SensorClean.Application.Interface.School;
 using Microsoft.OpenApi.Models;
 using SensorClean.Application.Services.UseCases.School;
@@ -14,6 +12,8 @@ namespace SensorClean.WebApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            Console.WriteLine("CONN STR: " + builder.Configuration.GetConnectionString("DefaultConnection"));
 
 
             builder.Services.AddControllers();
@@ -36,13 +36,11 @@ namespace SensorClean.WebApi
                 }
               )
            );
-
             builder.Services.AddDbContext<SensorCleanDbContext>(options =>
             options.UseOracle(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
 
             /// Service 
-
+            builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
             builder.Services.AddScoped<IGetAllSchools, GetAllSchools>();
             builder.Services.AddScoped<IGetSchoolById, GetSchoolById>();
             builder.Services.AddScoped<ICreateSchool, CreateSchool>();
