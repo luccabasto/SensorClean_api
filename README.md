@@ -7,9 +7,9 @@ API desenvolvida para o projeto **Green Light**: plataforma inteligente de preve
 
 ### Integrantes
 
-Lucas Bastos - 553771
-Erick Lopes - 553927
-Marcelo Galli - 553654
+Lucas Bastos - 553771<br/>
+Erick Lopes - 553927<br/>
+Marcelo Galli - 55365
 
 ---
 
