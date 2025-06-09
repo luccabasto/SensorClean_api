@@ -1,30 +1,47 @@
-﻿namespace SensorClean.Domain.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SensorClean.Domain.Models
 {
     public record SchoolModel
     {
         public int? Id { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
+
+        [NotMapped]
+        public string? Email { get; set; }
         public string? City { get; set; }
         public string? State { get; set; }
+
+        [NotMapped]
         public string? Country { get; set; }
+
+        [NotMapped]
         public string? Address { get; set; }
+
+        [NotMapped]
         public string? PostalCode { get; set; }
+
+        [NotMapped]
         public string? Phone { get; set; }
+        [NotMapped]
         public string? Website { get; set; }
+        [NotMapped]
         public DateTime CreatedAt { get; set; }
-        public bool IsActive { get; set; }
+
+        public string IsActive { get; set; }
+
         public ICollection<SensorModel>? Sensor { get; set; }
+
         public SchoolModel() { }
-        public SchoolModel(string name, string email, int id)
+        public SchoolModel(string name, string email, int id, string isActive)
         {
             Id = id; 
             Name = name;
             Email = email;
             CreatedAt = DateTime.UtcNow;
-            IsActive = false;
+            IsActive = isActive;
         }
-        public SchoolModel(int id, string name, string email, string? city, string? state, string? country, string? address, string? postalCode, string? phone, string? website, DateTime createdAt, bool isActive)
+        public SchoolModel(int id, string name, string email, string? city, string? state, string? country, string? address, string? postalCode, string? phone, string? website, DateTime createdAt, string isActive)
         {
             Id = id;
             Name = name;
@@ -40,16 +57,16 @@
             IsActive = isActive;
         }
 
-        public SchoolModel(int id, string name, string email, string city, string state)
+        public SchoolModel(int id, string name, string email, string city, string state, string isActive)
         {
             Id = id;
             Name = name;
             City = city;
             State = state;
-            IsActive = true;
+            IsActive = isActive;
         }
 
-        public SchoolModel(int id, string name, string email, DateTime createdAt, bool isActive, string? city, string? state)
+        public SchoolModel(int id, string name, string email, DateTime createdAt, string isActive, string? city, string? state)
         {
             Id = id;
             Name = name;
@@ -59,7 +76,7 @@
             State = state;
         }
 
-        public SchoolModel(int? id, string name, string email, DateTime createdAt, bool isActive, string? city, string? state, string? country, string? address, string? postalCode, string? phone, string? website)
+        public SchoolModel(int? id, string name, string email, DateTime createdAt, string isActive, string? city, string? state, string? country, string? address, string? postalCode, string? phone, string? website)
         {
             Id = id;
             Name = name;
@@ -73,11 +90,6 @@
             PostalCode = postalCode;
             Phone = phone;
             Website = website;
-        }
-
-        public void Activate()
-        {
-            IsActive = true;
         }
 
     }

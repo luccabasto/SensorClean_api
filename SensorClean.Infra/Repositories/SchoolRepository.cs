@@ -1,64 +1,49 @@
 ﻿using SensorClean.Application.Interface.Repositories;
 using SensorClean.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Net;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+
 
 namespace SensorClean.Infra.Repositories
 {
     public class SchoolRepository : ISchoolRepository
     {
-        private readonly List<SchoolModel> _schools = new();
-        private int _idCounter = 1;
+        private readonly SensorCleanDbContext _context;
+
+        public SchoolRepository(SensorCleanDbContext context)
+        {
+            _context = context;
+        }
 
         public SchoolModel Create(SchoolModel school)
         {
-            var newSchool = new SchoolModel(
-
-                id: _idCounter++,
-                name: school.Name,
-                email: school.Email,
-                city: school.City,
-                state: school.State,
-                country: school.Country,
-                address: school.Address,
-                postalCode: school.PostalCode,
-                phone: school.Phone,
-                website: school.Website,
-                createdAt: DateTime.UtcNow,
-                isActive: school.IsActive
-                );
-            _schools.Add(newSchool);
-            return newSchool;
+            _context.Escolas.Add(school);
+            _context.SaveChanges();
+            return school;
         }
+
         public SchoolModel? GetById(int id)
         {
-            return _schools.FirstOrDefault(s => s.Id == id);
+            return _context.Escolas.Find(id);
         }
 
         public IEnumerable<SchoolModel> GetAll()
         {
-            return _schools;
+            return _context.Escolas.ToList();
         }
 
         public bool Remove(int id)
         {
-            var school = GetById(id);
+            var school = _context.Escolas.Find(id);
             if (school == null) return false;
-            _schools.Remove(school);
+            _context.Escolas.Remove(school);
+            _context.SaveChanges();
             return true;
         }
 
         public SchoolModel? Update(int id, SchoolModel school)
         {
-            var existingSchool = GetById(id);
+            var existingSchool = _context.Escolas.Find(id);
             if (existingSchool == null) return null;
+
             existingSchool.Name = school.Name;
             existingSchool.Email = school.Email;
             existingSchool.City = school.City;
@@ -69,6 +54,8 @@ namespace SensorClean.Infra.Repositories
             existingSchool.Phone = school.Phone;
             existingSchool.Website = school.Website;
             existingSchool.IsActive = school.IsActive;
+
+            _context.SaveChanges();
             return existingSchool;
         }
     }

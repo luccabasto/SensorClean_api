@@ -7,34 +7,60 @@ namespace SensorClean.Infra.Repositories
 {
     public class AlertRepository : IAlertRepository
     {
-        private static readonly List<AlertModel> _alerts = new();
-        private static int _nextId = 1;
+        private readonly SensorCleanDbContext _context;
+
+        public AlertRepository(SensorCleanDbContext context)
+        {
+            _context = context;
+        }
 
         public AlertModel Create(AlertModel alert)
         {
-            var alertToAdd = alert with { Id = _nextId++ };
-            _alerts.Add(alertToAdd);
-            return alertToAdd;
+            _context.Alertas.Add(alert);
+            _context.SaveChanges();
+            return alert;
         }
 
-        public IEnumerable<AlertModel> GetAll() => _alerts;
+        public IEnumerable<AlertModel> GetAll()
+        {
+            return _context.Alertas.ToList();
+        }
 
-        public AlertModel? GetById(int id) => _alerts.FirstOrDefault(a => a.Id == id);
+        public AlertModel? GetById(int id)
+        {
+            return _context.Alertas.Find(id);
+        }
 
         public AlertModel? Update(int id, AlertModel alert)
         {
-            var index = _alerts.FindIndex(a => a.Id == id);
-            if (index == -1) return null;
+            var existingAlert = _context.Alertas.Find(id);
+            if (existingAlert == null) return null;
 
-            var updatedAlert = alert with { Id = id };
-            _alerts[index] = updatedAlert;
+            var updatedAlert = new AlertModel
+            {
+                Id = existingAlert.Id,
+                ReadingId = alert.ReadingId,
+                Type = alert.Type,
+                Mensager = alert.Mensager,
+                Level = alert.Level,
+                Status = alert.Status,
+                Timestamp = alert.Timestamp,
+                Reading = alert.Reading
+            };
+
+            _context.Entry(existingAlert).CurrentValues.SetValues(updatedAlert);
+            _context.SaveChanges();
             return updatedAlert;
         }
 
         public bool Remove(int id)
         {
-            var alert = _alerts.FirstOrDefault(a => a.Id == id);
-            return alert != null && _alerts.Remove(alert);
+            var alert = _context.Alertas.Find(id);
+            if (alert == null) return false;
+
+            _context.Alertas.Remove(alert);
+            _context.SaveChanges();
+            return true;
         }
     }
 }

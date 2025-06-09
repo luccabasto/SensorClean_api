@@ -5,6 +5,6 @@ namespace SensorClean.Application.Interface.School
 {
     public interface IUpdateSchool
     {
-        SchoolModel? UpdateSchoolByID(int id, SchoolModel school);
+        SchoolModel? updateSchoolByID(int id, SchoolModel school);
     }
 }
